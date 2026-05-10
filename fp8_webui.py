@@ -33,6 +33,22 @@ def _load_root_fp8_loader(root: Path):
     return module
 
 
+def _apply_webui_enhancements(webui, root: Path) -> None:
+    script_path = root / "webui_enhancements.js"
+    script = script_path.read_text(encoding="utf-8")
+    marker = "<!-- hidream-fp8-webui-enhancements -->"
+    if marker in webui.INDEX_HTML:
+        return
+    if "</body>" not in webui.INDEX_HTML:
+        raise RuntimeError("Could not attach launcher web UI enhancements.")
+
+    webui.INDEX_HTML = webui.INDEX_HTML.replace(
+        "</body>",
+        f"{marker}\n<script>\n{script}\n</script>\n</body>",
+        1,
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser("HiDream-O1-Image FP8 web UI runner")
     parser.add_argument("--app_dir", default="app")
@@ -50,6 +66,7 @@ def main() -> None:
     model_path = (root / args.model_path).resolve() if not Path(args.model_path).is_absolute() else Path(args.model_path)
 
     webui = _load_original_webui(app_dir)
+    _apply_webui_enhancements(webui, root)
 
     loader = _load_root_fp8_loader(root)
     processor, model = loader.load_image_model(model_path)

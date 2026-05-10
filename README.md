@@ -24,8 +24,9 @@ That path does not preserve the FP8 checkpoint as FP8. The launcher therefore
 uses an explicit FP8 loader that reads the FP8 safetensors directly, keeps large
 matrix weights in FP8, uses explicit per-module wrapper layers for compute
 casting, and starts the original web UI through `fp8_webui.py`. It does not
-write helper code into `app/`, modify upstream source files, or replace upstream
-functions at runtime.
+write helper code into `app/` or modify upstream source files. The launcher adds
+one root-owned browser enhancement script to the served web UI so regular
+browsers get a random seed toggle and a generated-image download button.
 
 ComfyUI is not installed or launched by this launcher.
 
@@ -73,8 +74,11 @@ python fp8_webui.py --model_path app/models/HiDream-O1-Image-Dev-FP8 --model_typ
   PyTorch, installs FlashAttention for upstream inference, and downloads the
   Dev FP8 model.
 - `fp8_webui.py`: root runner that imports the original Flask web UI from
-  `app/app.py`, initializes the model state with the FP8 loader, and starts it.
+  `app/app.py`, initializes the model state with the FP8 loader, attaches the
+  root web UI enhancement script, and starts it.
 - `fp8_loader.py`: root FP8 loader for the drbaph safetensors checkpoint.
+- `webui_enhancements.js`: root browser enhancement that adds a random seed
+  toggle and a `Download PNG` link without editing `app/`.
 - `start.js`: starts the original web UI through `fp8_webui.py` with Dev FP8 on
   `127.0.0.1` using a dynamic Pinokio port.
 - `update.js`: pulls updates, refreshes dependencies, and refreshes the Dev FP8

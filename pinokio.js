@@ -4,7 +4,7 @@ module.exports = {
   icon: "icon.png",
   description: "Original HiDream-O1-Image web UI launched with the drbaph Dev FP8 low-VRAM checkpoint.",
   menu: async (kernel, info) => {
-    let installed = info.exists("app/env") && info.exists("app/app.py") && info.exists("fp8_webui.py") && info.exists("fp8_loader.py") && info.exists("app/models/HiDream-O1-Image-Dev-FP8/model.safetensors")
+    let installed = info.exists("app/env") && info.exists("app/app.py") && info.exists("fp8_webui.py") && info.exists("fp8_loader.py") && info.exists("webui_enhancements.js") && info.exists("app/models/HiDream-O1-Image-Dev-FP8/model.safetensors")
     let running = {
       install: info.running("install.js"),
       start: info.running("start.js"),
