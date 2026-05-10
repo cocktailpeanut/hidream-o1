@@ -4,17 +4,6 @@ module.exports = {
   },
   run: [
     {
-      when: "{{exists('app') && !exists('app/app.py')}}",
-      method: "shell.run",
-      params: {
-        message: [
-          "echo The existing app folder is not the original HiDream web UI checkout.",
-          "echo Run Reset first if this folder came from an older launcher attempt.",
-          "exit 1"
-        ]
-      }
-    },
-    {
       when: "{{!exists('app')}}",
       method: "shell.run",
       params: {
