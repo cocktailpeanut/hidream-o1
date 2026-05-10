@@ -32,7 +32,7 @@ module.exports = {
         path: "app",
         message: [
           "uv pip install -r requirements.txt",
-          "uv pip install safetensors huggingface_hub"
+          "uv pip install safetensors huggingface_hub python-dotenv"
         ]
       }
     },

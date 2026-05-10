@@ -22,6 +22,17 @@ def _load_original_webui(app_dir: Path):
     return module
 
 
+def _load_root_fp8_loader(root: Path):
+    loader_path = root / "fp8_loader.py"
+    spec = importlib.util.spec_from_file_location("hidream_root_fp8_loader", loader_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Could not load FP8 loader from {loader_path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
 def main() -> None:
     parser = argparse.ArgumentParser("HiDream-O1-Image FP8 web UI runner")
     parser.add_argument("--app_dir", default="app")
@@ -40,9 +51,8 @@ def main() -> None:
 
     webui = _load_original_webui(app_dir)
 
-    from fp8_loader import load_image_model
-
-    processor, model = load_image_model(model_path)
+    loader = _load_root_fp8_loader(root)
+    processor, model = loader.load_image_model(model_path)
     webui._STATE["processor"] = processor
     webui._STATE["model"] = model
     webui._STATE["model_type"] = args.model_type

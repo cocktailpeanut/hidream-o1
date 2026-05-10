@@ -69,6 +69,9 @@ python fp8_webui.py --model_path app/models/HiDream-O1-Image-FP8 --model_type fu
   download.
 - `reset.js`: removes `app/`, including the venv and downloaded model.
 
+`python-dotenv` is installed explicitly because the upstream web UI imports
+`dotenv` but does not list it in its requirements file.
+
 ## HTTP API
 
 The original HiDream Flask API is available after `Start`. Replace `7860` with
