@@ -1,0 +1,19 @@
+{
+  "title": "HiDream O1 Image FP8",
+  "description": "One-click launcher for the original HiDream-O1-Image web UI using the drbaph FP8 checkpoint through a root FP8 runner. Requires an NVIDIA CUDA GPU.",
+  "gpu": "nvidia",
+  "links": [
+    {
+      "title": "Original HiDream web UI",
+      "value": "https://github.com/HiDream-ai/HiDream-O1-Image"
+    },
+    {
+      "title": "FP8 model",
+      "value": "https://huggingface.co/drbaph/HiDream-O1-Image-FP8"
+    },
+    {
+      "title": "Original model",
+      "value": "https://huggingface.co/HiDream-ai/HiDream-O1-Image"
+    }
+  ]
+}
