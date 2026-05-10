@@ -29,6 +29,10 @@ functions at runtime.
 
 ComfyUI is not installed or launched by this launcher.
 
+The upstream repo does not ship a dedicated `icon.*` or `logo.*` asset. The
+Pinokio launcher vendors the upstream GitHub organization avatar as root
+`icon.png` for its app tile, leaving `app/` as the unmodified upstream clone.
+
 ## Requirements
 
 - NVIDIA CUDA GPU.

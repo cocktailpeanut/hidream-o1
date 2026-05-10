@@ -52,11 +52,5 @@ module.exports = {
         "local-dir": "HiDream-O1-Image-FP8"
       }
     },
-    {
-      method: "fs.link",
-      params: {
-        venv: "app/env"
-      }
-    }
   ]
 }
