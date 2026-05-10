@@ -1,9 +1,9 @@
-# HiDream O1 Image FP8 Pinokio Launcher
+# HiDream O1 Image Dev FP8 Pinokio Launcher
 
 This launcher runs the original
 [HiDream-ai/HiDream-O1-Image](https://github.com/HiDream-ai/HiDream-O1-Image)
 Flask web UI with the
-[drbaph/HiDream-O1-Image-FP8](https://huggingface.co/drbaph/HiDream-O1-Image-FP8)
+[drbaph/HiDream-O1-Image-Dev-FP8](https://huggingface.co/drbaph/HiDream-O1-Image-Dev-FP8)
 checkpoint.
 
 The upstream web UI is kept as the user-facing app. Pinokio clones the original
@@ -40,47 +40,53 @@ Pinokio launcher vendors the upstream GitHub organization avatar as root
 - Around 10 GB VRAM for the FP8 model, based on the FP8 model card.
 - Enough disk space for the original repo, Python environment, and checkpoint.
 
+## Model Behavior
+
+This launcher ships only the Dev FP8 checkpoint. It starts the upstream web UI
+with `--model_type dev`, so the original app uses its built-in Dev settings:
+28 inference steps, CFG disabled (`guidance_scale=0.0`), shift `1.0`, and the
+Flash scheduler.
+
 ## How To Use
 
 1. Click `Install`.
 2. Wait for Pinokio to clone the original HiDream web UI, install dependencies,
-   install the root FP8 runner dependencies, and download the FP8 checkpoint.
+   install the root FP8 runner dependencies, and download the Dev FP8 checkpoint.
 3. Click `Start`.
 4. Open `Open Web UI`.
 
-The FP8 model is downloaded to:
+The model is downloaded to:
 
 ```text
-app/models/HiDream-O1-Image-FP8
+app/models/HiDream-O1-Image-Dev-FP8
 ```
 
-The command started by Pinokio is:
+The Dev command started by Pinokio is:
 
 ```bash
-python fp8_webui.py --model_path app/models/HiDream-O1-Image-FP8 --model_type full --host 127.0.0.1 --port <dynamic-port>
+python fp8_webui.py --model_path app/models/HiDream-O1-Image-Dev-FP8 --model_type dev --host 127.0.0.1 --port <dynamic-port>
 ```
 
 ## Scripts
 
 - `install.js`: clones the original HiDream repo, installs dependencies and CUDA
-  PyTorch, installs FlashAttention for upstream inference, and downloads the FP8
-  model.
+  PyTorch, installs FlashAttention for upstream inference, and downloads the
+  Dev FP8 model.
 - `fp8_webui.py`: root runner that imports the original Flask web UI from
   `app/app.py`, initializes the model state with the FP8 loader, and starts it.
 - `fp8_loader.py`: root FP8 loader for the drbaph safetensors checkpoint.
-- `start.js`: starts the original web UI through `fp8_webui.py` on `127.0.0.1`
-  using a dynamic Pinokio port.
-- `update.js`: pulls updates, refreshes dependencies, and refreshes the FP8 model
-  download.
+- `start.js`: starts the original web UI through `fp8_webui.py` with Dev FP8 on
+  `127.0.0.1` using a dynamic Pinokio port.
+- `update.js`: pulls updates, refreshes dependencies, and refreshes the Dev FP8
+  model download.
 - `reset.js`: removes `app/`, including the venv and downloaded model.
 
 `python-dotenv` is installed explicitly because the upstream web UI imports
 `dotenv` but does not list it in its requirements file.
 
-If the web UI shows `Flash attention is not available`, run `Update` or
-`Reinstall`. Upstream inference sets `use_flash_attn` to `True`, so the launcher
-installs `flash_attn` through `torch.js` instead of editing upstream
-`models/pipeline.py`.
+If the web UI shows `Flash attention is not available`, run `Update`. Upstream
+inference sets `use_flash_attn` to `True`, so the launcher installs `flash_attn`
+through `torch.js` instead of editing upstream `models/pipeline.py`.
 
 ## HTTP API
 

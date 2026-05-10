@@ -41,9 +41,9 @@ module.exports = {
       method: "hf.download",
       params: {
         path: "app/models",
-        _: ["drbaph/HiDream-O1-Image-FP8"],
-        "local-dir": "HiDream-O1-Image-FP8"
+        _: ["drbaph/HiDream-O1-Image-Dev-FP8"],
+        "local-dir": "HiDream-O1-Image-Dev-FP8"
       }
-    },
+    }
   ]
 }

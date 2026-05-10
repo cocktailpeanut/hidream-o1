@@ -1,10 +1,10 @@
 module.exports = {
   version: "7.0",
-  title: "HiDream O1 Image FP8",
+  title: "HiDream O1 Image Dev FP8",
   icon: "icon.png",
-  description: "Original HiDream-O1-Image web UI launched from a root FP8 runner for the drbaph low-VRAM checkpoint.",
+  description: "Original HiDream-O1-Image web UI launched with the drbaph Dev FP8 low-VRAM checkpoint.",
   menu: async (kernel, info) => {
-    let installed = info.exists("app/env") && info.exists("app/app.py") && info.exists("fp8_webui.py") && info.exists("fp8_loader.py") && info.exists("app/models/HiDream-O1-Image-FP8/model.safetensors")
+    let installed = info.exists("app/env") && info.exists("app/app.py") && info.exists("fp8_webui.py") && info.exists("fp8_loader.py") && info.exists("app/models/HiDream-O1-Image-Dev-FP8/model.safetensors")
     let running = {
       install: info.running("install.js"),
       start: info.running("start.js"),
@@ -63,7 +63,7 @@ module.exports = {
         }, {
           icon: "fa-solid fa-folder-open",
           text: "Model Folder",
-          href: "app/models/HiDream-O1-Image-FP8?fs"
+          href: "app/models/HiDream-O1-Image-Dev-FP8?fs"
         }, {
           icon: "fa-solid fa-rotate",
           text: "Update",
