@@ -1,6 +1,6 @@
 {
-  "title": "HiDream O1 Image Dev FP8",
-  "description": "One-click launcher for the original HiDream-O1-Image web UI using the drbaph Dev FP8 low-VRAM checkpoint through a root FP8 runner. Requires an NVIDIA CUDA GPU.",
+  "title": "HiDream O1 Image FP8",
+  "description": "One-click launcher for the original HiDream-O1-Image web UI using lazy-downloaded drbaph Dev or Full FP8 checkpoints through a root FP8 runner. Requires an NVIDIA CUDA GPU.",
   "icon": "icon.png",
   "gpu": "nvidia",
   "links": [
@@ -11,6 +11,10 @@
     {
       "title": "Dev FP8 model",
       "value": "https://huggingface.co/drbaph/HiDream-O1-Image-Dev-FP8"
+    },
+    {
+      "title": "Full FP8 model",
+      "value": "https://huggingface.co/drbaph/HiDream-O1-Image-FP8"
     },
     {
       "title": "Original model",

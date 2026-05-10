@@ -1,10 +1,11 @@
-# HiDream O1 Image Dev FP8 Pinokio Launcher
+# HiDream O1 Image FP8 Pinokio Launcher
 
 This launcher runs the original
 [HiDream-ai/HiDream-O1-Image](https://github.com/HiDream-ai/HiDream-O1-Image)
-Flask web UI with the
+Flask web UI with lazy-downloaded FP8 checkpoints:
 [drbaph/HiDream-O1-Image-Dev-FP8](https://huggingface.co/drbaph/HiDream-O1-Image-Dev-FP8)
-checkpoint.
+or
+[drbaph/HiDream-O1-Image-FP8](https://huggingface.co/drbaph/HiDream-O1-Image-FP8).
 
 The upstream web UI is kept as the user-facing app. Pinokio clones the original
 repo into `app/` and leaves that repo code unchanged. The root launcher file
@@ -38,28 +39,36 @@ Pinokio launcher vendors the upstream GitHub organization avatar as root
 
 - NVIDIA CUDA GPU.
 - A recent PyTorch build with FP8 dtype support.
-- Around 10 GB VRAM for the FP8 model, based on the FP8 model card.
-- Enough disk space for the original repo, Python environment, and checkpoint.
+- Around 10 GB VRAM for each FP8 model, based on the FP8 model cards.
+- Enough disk space for the original repo, Python environment, and selected checkpoint.
 
 ## Model Behavior
 
-This launcher ships only the Dev FP8 checkpoint. It starts the upstream web UI
-with `--model_type dev`, so the original app uses its built-in Dev settings:
+This launcher supports both FP8 checkpoints. `Start Dev FP8` passes
+`--model_type dev`, so the original app uses its built-in Dev settings:
 28 inference steps, CFG disabled (`guidance_scale=0.0`), shift `1.0`, and the
 Flash scheduler.
+
+`Start Full FP8` passes `--model_type full`, so the original app uses its
+built-in Full settings: 50 inference steps, CFG enabled
+(`guidance_scale=5.0`), shift `3.0`, and the default scheduler. No upstream
+Python app code is modified for this; the root `fp8_webui.py` already forwards
+the selected `model_type` into the original web UI state.
 
 ## How To Use
 
 1. Click `Install`.
 2. Wait for Pinokio to clone the original HiDream web UI, install dependencies,
-   install the root FP8 runner dependencies, and download the Dev FP8 checkpoint.
-3. Click `Start`.
+   and install the root FP8 runner dependencies.
+3. Click `Start Dev FP8` or `Start Full FP8`. The selected checkpoint downloads
+   on first use and is reused on later launches.
 4. Open `Open Web UI`.
 
-The model is downloaded to:
+Models are downloaded to:
 
 ```text
 app/models/HiDream-O1-Image-Dev-FP8
+app/models/HiDream-O1-Image-FP8
 ```
 
 The Dev command started by Pinokio is:
@@ -68,21 +77,28 @@ The Dev command started by Pinokio is:
 python fp8_webui.py --model_path app/models/HiDream-O1-Image-Dev-FP8 --model_type dev --host 127.0.0.1 --port <dynamic-port>
 ```
 
+The Full command started by Pinokio is:
+
+```bash
+python fp8_webui.py --model_path app/models/HiDream-O1-Image-FP8 --model_type full --host 127.0.0.1 --port <dynamic-port>
+```
+
 ## Scripts
 
 - `install.js`: clones the original HiDream repo, installs dependencies and CUDA
-  PyTorch, installs FlashAttention for upstream inference, and downloads the
-  Dev FP8 model.
+  PyTorch, and installs FlashAttention for upstream inference. It does not
+  download a model.
 - `fp8_webui.py`: root runner that imports the original Flask web UI from
   `app/app.py`, initializes the model state with the FP8 loader, attaches the
   root web UI enhancement script, and starts it.
 - `fp8_loader.py`: root FP8 loader for the drbaph safetensors checkpoint.
 - `webui_enhancements.js`: root browser enhancement that adds a random seed
   toggle and a `Download PNG` link without editing `app/`.
-- `start.js`: starts the original web UI through `fp8_webui.py` with Dev FP8 on
-  `127.0.0.1` using a dynamic Pinokio port.
-- `update.js`: pulls updates, refreshes dependencies, and refreshes the Dev FP8
-  model download.
+- `start.js`: lazily downloads the selected FP8 model if needed, then starts
+  the original web UI through `fp8_webui.py` on `127.0.0.1` using a dynamic
+  Pinokio port.
+- `update.js`: pulls updates and refreshes dependencies without forcing a model
+  download.
 - `reset.js`: removes `app/`, including the venv and downloaded model.
 
 `python-dotenv` is installed explicitly because the upstream web UI imports
@@ -94,8 +110,8 @@ through `torch.js` instead of editing upstream `models/pipeline.py`.
 
 ## HTTP API
 
-The original HiDream Flask API is available after `Start`. Replace `7860` with
-the dynamic port shown by Pinokio.
+The original HiDream Flask API is available after either Start option. Replace
+`7860` with the dynamic port shown by Pinokio.
 
 ### JavaScript
 

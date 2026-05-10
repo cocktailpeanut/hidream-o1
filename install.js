@@ -44,14 +44,6 @@ module.exports = {
           "uv pip install safetensors huggingface_hub python-dotenv"
         ]
       }
-    },
-    {
-      method: "hf.download",
-      params: {
-        path: "app/models",
-        _: ["drbaph/HiDream-O1-Image-Dev-FP8"],
-        "local-dir": "HiDream-O1-Image-Dev-FP8"
-      }
     }
   ]
 }
