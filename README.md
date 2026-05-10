@@ -63,7 +63,8 @@ python fp8_webui.py --model_path app/models/HiDream-O1-Image-FP8 --model_type fu
 ## Scripts
 
 - `install.js`: clones the original HiDream repo, installs dependencies and CUDA
-  PyTorch, and downloads the FP8 model.
+  PyTorch, installs FlashAttention for upstream inference, and downloads the FP8
+  model.
 - `fp8_webui.py`: root runner that imports the original Flask web UI from
   `app/app.py`, initializes the model state with the FP8 loader, and starts it.
 - `fp8_loader.py`: root FP8 loader for the drbaph safetensors checkpoint.
@@ -75,6 +76,11 @@ python fp8_webui.py --model_path app/models/HiDream-O1-Image-FP8 --model_type fu
 
 `python-dotenv` is installed explicitly because the upstream web UI imports
 `dotenv` but does not list it in its requirements file.
+
+If the web UI shows `Flash attention is not available`, run `Update` or
+`Reinstall`. Upstream inference sets `use_flash_attn` to `True`, so the launcher
+installs `flash_attn` through `torch.js` instead of editing upstream
+`models/pipeline.py`.
 
 ## HTTP API
 

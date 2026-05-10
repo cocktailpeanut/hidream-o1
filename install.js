@@ -29,7 +29,8 @@ module.exports = {
         uri: "torch.js",
         params: {
           venv: "env",
-          path: "app"
+          path: "app",
+          flashattention: true
         }
       }
     },
