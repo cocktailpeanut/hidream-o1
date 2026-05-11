@@ -39,6 +39,9 @@ module.exports = {
       params: {
         venv: "env",
         path: "app",
+        env: {
+          HF_HUB_DISABLE_UPDATE_CHECK: "1"
+        },
         message: [
           "uv pip install -r requirements.txt",
           "uv pip install safetensors huggingface_hub python-dotenv"
