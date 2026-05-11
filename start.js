@@ -10,14 +10,23 @@ module.exports = async (kernel) => {
         }
       },
       {
+        when: "{{!exists('app/models')}}",
+        method: "shell.run",
+        params: {
+          path: "app",
+          message: "mkdir models"
+        }
+      },
+      {
         when: "{{!exists(args && args.model_file ? args.model_file : 'app/models/HiDream-O1-Image-Dev-FP8/model.safetensors')}}",
         method: "shell.run",
         params: {
-          path: "app/models",
+          venv: "env",
+          path: "app",
           env: {
             HF_HUB_DISABLE_UPDATE_CHECK: "1"
           },
-          message: "hf download {{args && args.repo ? args.repo : 'drbaph/HiDream-O1-Image-Dev-FP8'}} --local-dir {{args && args.dir ? args.dir : 'HiDream-O1-Image-Dev-FP8'}}"
+          message: "hf download {{args && args.repo ? args.repo : 'drbaph/HiDream-O1-Image-Dev-FP8'}} --local-dir models/{{args && args.dir ? args.dir : 'HiDream-O1-Image-Dev-FP8'}}"
         }
       },
       {
