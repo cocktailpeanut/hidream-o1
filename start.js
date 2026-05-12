@@ -13,6 +13,9 @@ module.exports = async (kernel) => {
         when: "{{!exists(args && args.model_file ? args.model_file : 'app/models/HiDream-O1-Image-Dev-FP8/model.safetensors')}}",
         method: "hf.download",
         params: {
+          env: {
+            HF_HUB_DISABLE_UPDATE_CHECK: "1"
+          },
           path: "app/models",
           _: ["{{args && args.repo ? args.repo : 'drbaph/HiDream-O1-Image-Dev-FP8'}}"],
           "local-dir": "{{args && args.dir ? args.dir : 'HiDream-O1-Image-Dev-FP8'}}"
