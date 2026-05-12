@@ -16,6 +16,20 @@ module.exports = {
       }
     },
     {
+      method: "shell.run",
+      params: {
+        venv: "env",
+        path: "app",
+        env: {
+          HF_HUB_DISABLE_UPDATE_CHECK: "1"
+        },
+        message: [
+          "uv pip install -r requirements.txt",
+          "uv pip install accelerate safetensors huggingface_hub python-dotenv"
+        ]
+      }
+    },
+    {
       method: "script.start",
       params: {
         uri: "torch.js",
@@ -24,17 +38,6 @@ module.exports = {
           path: "app",
           flashattention: true
         }
-      }
-    },
-    {
-      method: "shell.run",
-      params: {
-        venv: "env",
-        path: "app",
-        message: [
-          "uv pip install -r requirements.txt",
-          "uv pip install safetensors huggingface_hub python-dotenv"
-        ]
       }
     }
   ]
